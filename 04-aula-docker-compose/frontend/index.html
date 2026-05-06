@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha API</title>
+</head>
+<body>
+    <header>
+        <h1>Aula 4: Docker Compose</h1>
+        <p>frontend → nginx &nbsp;|&nbsp; backend → flask</p>
+    </header>
+    <div class="cards">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">GET /</span>
+                <span class="route-badge">index</span>
+            </div>
+             <div class="result-box" id="res-index">aguardando...</div>
+            <button onclick="call('/', 'res-index', this)">Chamar rota</button>
+        </div>
+        <br>
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">GET /saude</span>
+                <span class="route-badge">health</span>
+            </div>
+            <div class="result-box" id="res-saude">aguardando...</div>
+            <button onclick="call('/saude', 'res-saude', this)">Chamar rota</button>
+        </div>
+    </div>
+    <br>
+
+<script>
+  const API = 'http://127.0.0.1:5000';
+ 
+  async function call(route, boxId, btn) {
+    const box = document.getElementById(boxId);
+ 
+    btn.disabled = true;
+    box.textContent = 'chamando...';
+ 
+    try {
+      const res = await fetch(API + route);
+      const data = await res.json();
+      box.textContent = JSON.stringify(data, null, 2);
+    } catch (e) {
+      box.textContent = 'Erro: ' + e.message;
+      box.className = 'result-box error';
+    } finally {
+      btn.disabled = false;
+    }
+  }
+</script>
+</body>
+</html>
